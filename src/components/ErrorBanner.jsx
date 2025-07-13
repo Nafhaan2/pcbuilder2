@@ -16,3 +16,6 @@ function ErrorBanner({ message, onDismiss }) {
     </div>
   );
 }
+
+// Add this line to export the component
+export default ErrorBanner;
