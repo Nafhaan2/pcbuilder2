@@ -1,0 +1,437 @@
+/* src/styles/enhanced.css - Performance optimized styles */
+
+/* ========== BASE LAYOUT ========== */
+.pc-builder-app {
+  padding: 20px;
+  max-width: 1600px;
+  margin: 0 auto;
+  background: #121212;
+  color: #fff;
+  min-height: 100vh;
+}
+
+.builder-interface {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.builder-content {
+  display: grid;
+  grid-template-columns: 1fr 350px;
+  gap: 30px;
+  align-items: start;
+}
+
+@media (max-width: 1024px) {
+  .builder-content {
+    grid-template-columns: 1fr;
+  }
+  
+  .builder-sidebar {
+    order: -1; /* Show summary first on mobile */
+  }
+}
+
+/* ========== PERFORMANCE OPTIMIZATIONS ========== */
+.pcb-card {
+  /* Use transform for better performance */
+  transform: translateZ(0);
+  will-change: transform;
+  /* Contain layout changes */
+  contain: layout style paint;
+}
+
+.pcb-card img {
+  /* Optimize image rendering */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  /* Prevent layout shift */
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+}
+
+/* Lazy loading states */
+.card-image-container {
+  position: relative;
+  overflow: hidden;
+  background: #1a1a1a;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+
+.image-loading,
+.image-error {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 12px;
+  color: #666;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 8px 12px;
+  border-radius: 4px;
+}
+
+/* ========== BUILD SUMMARY SIDEBAR ========== */
+.build-summary {
+  position: sticky;
+  top: 20px;
+  background: #1a1a1a;
+  border: 2px solid #333;
+  border-radius: 12px;
+  padding: 0;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.summary-header {
+  background: #2a2a2a;
+  padding: 20px;
+  border-bottom: 1px solid #333;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.summary-header h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.item-count {
+  background: #ffe24c;
+  color: #000;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.summary-content {
+  padding: 20px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.empty-state {
+  text-align: center;
+  color: #666;
+  font-style: italic;
+  margin: 40px 0;
+}
+
+.selected-items {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 12px;
+  background: #222;
+  border-radius: 8px;
+  border-left: 3px solid #ffe24c;
+}
+
+.item-info {
+  flex: 1;
+  min-width: 0; /* Allow text truncation */
+}
+
+.item-name {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.3;
+  margin-bottom: 4px;
+  /* Truncate long names */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.item-category {
+  font-size: 11px;
+  color: #999;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.item-price {
+  font-size: 13px;
+  font-weight: 600;
+  color: #ffe24c;
+  margin-left: 8px;
+  white-space: nowrap;
+}
+
+.summary-footer {
+  background: #2a2a2a;
+  padding: 20px;
+  border-top: 1px solid #333;
+}
+
+.total-price {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.total-price .label {
+  color: #ccc;
+}
+
+.total-price .amount {
+  color: #ffe24c;
+}
+
+.add-to-cart-btn {
+  width: 100%;
+  padding: 14px 20px;
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.add-to-cart-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #218838 0%, #1abc9c 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+}
+
+.add-to-cart-btn:disabled {
+  background: #444;
+  color: #888;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid transparent;
+  border-top: 2px solid currentColor;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* ========== ERROR BANNER ========== */
+.error-banner {
+  background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+  border: 1px solid #bd2130;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  animation: slideIn 0.3s ease-out;
+}
+
+.error-content {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  gap: 12px;
+}
+
+.error-icon {
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.error-message {
+  flex: 1;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.error-dismiss {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.error-dismiss:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* ========== LOADING STATES ========== */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
+}
+
+.loading-skeleton {
+  background: linear-gradient(90deg, #333 25%, #444 50%, #333 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 4px;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* ========== CHOOSER GRID IMPROVEMENTS ========== */
+.chooser-grid {
+  background: #1a1a1a;
+  border-radius: 12px;
+  max-height: 80vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.chooser-header {
+  padding: 24px;
+  background: #222;
+  border-bottom: 1px solid #333;
+  flex-shrink: 0;
+}
+
+.products-container {
+  flex: 1;
+  overflow: auto;
+  padding: 20px;
+  /* Smooth scrolling */
+  scroll-behavior: smooth;
+  /* Better scrollbar styling */
+  scrollbar-width: thin;
+  scrollbar-color: #555 #222;
+}
+
+.products-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.products-container::-webkit-scrollbar-track {
+  background: #222;
+}
+
+.products-container::-webkit-scrollbar-thumb {
+  background: #555;
+  border-radius: 4px;
+}
+
+.products-container::-webkit-scrollbar-thumb:hover {
+  background: #666;
+}
+
+/* ========== ACCESSIBILITY IMPROVEMENTS ========== */
+/* Focus indicators */
+.pcb-card:focus,
+.add-to-cart-btn:focus,
+button:focus {
+  outline: 2px solid #ffe24c;
+  outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .pcb-card {
+    border-color: #fff;
+  }
+  
+  .pcb-card.selected {
+    outline-color: #fff;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .pcb-card,
+  .add-to-cart-btn,
+  .spinner {
+    animation: none;
+    transition: none;
+  }
+  
+  .pcb-card:hover {
+    transform: none;
+  }
+}
+
+/* ========== RESPONSIVE DESIGN ========== */
+@media (max-width: 768px) {
+  .pc-builder-app {
+    padding: 10px;
+  }
+  
+  .pcb-card {
+    min-height: 280px;
+    padding: 16px;
+  }
+  
+  .pcb-card img {
+    height: 140px;
+  }
+  
+  .build-summary {
+    position: static;
+  }
+  
+  .summary-content {
+    max-height: 250px;
+  }
+  
+  .products-container {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+/* ========== PRINT STYLES ========== */
+@media print {
+  .pc-builder-app {
+    background: #fff;
+    color: #000;
+  }
+  
+  .add-to-cart-btn,
+  .error-banner,
+  .chooser-grid {
+    display: none;
+  }
+  
+  .build-summary {
+    break-inside: avoid;
+    border: 1px solid #000;
+  }
+}
