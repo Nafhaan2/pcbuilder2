@@ -1,0 +1,72 @@
+/* --------------- accordion header ------------------- */
+.pcb-acc-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 22px;
+  background: #3a3a3a;
+  color: #fff;
+  cursor: pointer;
+  user-select: none;
+  border: 2px solid transparent;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.pcb-acc-header:hover {
+  border-color: #c7c000;      /* subtle yellow glow on hover */
+}
+
+.pcb-acc-header.open {
+  border-color: #ffe24c;      /* stronger yellow when open */
+}
+
+.pcb-acc-thumb {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  flex: 0 0 64px;
+}
+
+.pcb-acc-meta {
+  flex: 1 1 auto;
+}
+
+.pcb-acc-meta .label {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.pcb-acc-meta .sel-name {
+  font-size: 14px;
+  color: #d5d5d5;
+  margin-top: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pcb-acc-price {
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffb400;
+  margin-right: 8px;
+}
+
+.pcb-acc-chevron {
+  transition: transform 0.25s;
+}
+.pcb-acc-header.open .pcb-acc-chevron {
+  transform: rotate(180deg);
+}
+
+/* --------------- slide container -------------------- */
+.pcb-acc-body {
+  overflow: hidden;
+  transition: max-height 0.35s ease;
+  background: #1b1b1b;
+  border-left: 2px solid #ffe24c;
+  border-right: 2px solid #ffe24c;
+  border-bottom: 2px solid #ffe24c;
+  margin-bottom: 28px;        /* spacing between next header */
+}
