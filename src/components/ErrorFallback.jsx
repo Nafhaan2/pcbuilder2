@@ -1,5 +1,6 @@
 import { memo } from 'react';
-export function ErrorFallback({ error, resetErrorBoundary }) {
+
+function ErrorFallback({ error, resetErrorBoundary }) {
   return (
     <div
       className="error-fallback"
@@ -49,3 +50,5 @@ export function ErrorFallback({ error, resetErrorBoundary }) {
     </div>
   );
 }
+
+export default ErrorFallback;

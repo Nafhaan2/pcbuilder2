@@ -1,6 +1,6 @@
 import { memo } from 'react';
 
-export function FilterPills({
+function FilterPills({
   typeTerms,
   capTerms,
   typeFilter,
@@ -71,3 +71,5 @@ export function FilterPills({
     </div>
   );
 }
+
+export default FilterPills;
