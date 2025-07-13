@@ -1,3 +1,5 @@
+import { memo } from 'react';
+
 export function FilterPills({
   typeTerms,
   capTerms,

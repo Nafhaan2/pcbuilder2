@@ -1,3 +1,4 @@
+import { memo } from 'react';
 export function ErrorFallback({ error, resetErrorBoundary }) {
   return (
     <div

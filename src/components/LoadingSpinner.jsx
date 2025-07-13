@@ -1,4 +1,6 @@
+
 // src/components/LoadingSpinner.jsx - Accessible loading component
+import { memo } from 'react';
 export function LoadingSpinner({ size = 'medium', message = 'Loading...' }) {
   const sizeMap = {
     small: 24,

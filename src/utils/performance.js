@@ -1,4 +1,5 @@
 // src/utils/performance.js
+import { useState, useEffect, useRef } from 'react';
 
 /**
  * Debounce function to limit API calls

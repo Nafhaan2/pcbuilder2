@@ -1,13 +1,13 @@
-// src/components/BuildSummary.jsx - Sticky sidebar summary
 import { memo } from 'react';
+import { useCart } from '../services/cartService';
+import ErrorBanner from './ErrorBanner';
 
 function BuildSummary({ 
   selectedComponents, 
   totalPrice, 
-  itemCount, 
-  onAddToCart, 
-  isAdding 
+  itemCount
 }) {
+  const { addBuildToCart, isAdding, error: cartError, clearError } = useCart();
   const hasItems = itemCount > 0;
   
   const formatPrice = (price) => {
@@ -17,8 +17,23 @@ function BuildSummary({
     });
   };
 
+  const handleAddToCart = async () => {
+    try {
+      await addBuildToCart(selectedComponents);
+    } catch (error) {
+      console.error('Failed to add build to cart:', error);
+    }
+  };
+
   return (
     <div className="build-summary">
+      {cartError && (
+        <ErrorBanner 
+          message={cartError} 
+          onDismiss={clearError}
+        />
+      )}
+      
       <div className="summary-header">
         <h3>Build Summary</h3>
         <span className="item-count">
@@ -62,7 +77,7 @@ function BuildSummary({
         
         <button
           className="add-to-cart-btn"
-          onClick={onAddToCart}
+          onClick={handleAddToCart}
           disabled={!hasItems || isAdding}
           aria-label={`Add ${itemCount} items to cart`}
         >

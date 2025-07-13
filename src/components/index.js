@@ -4,4 +4,7 @@ export { default as BuilderTable } from './BuilderTable';
 export { default as ChooserGrid } from './ChooserGrid';
 export { default as ProductCard } from './ProductCard';
 export { default as BuildSummary } from './BuildSummary';
-export { default as LoadingSpinner, ErrorFallback } from './LoadingSpinner';
+export { default as LoadingSpinner } from './LoadingSpinner';
+export { default as ErrorFallback } from './ErrorFallback';
+export { FilterPills } from './FilterPills';
+export { ErrorBanner } from './ErrorBanner';

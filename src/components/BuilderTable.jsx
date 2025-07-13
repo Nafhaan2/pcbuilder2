@@ -1,25 +1,30 @@
+
 import { useState, useRef, useLayoutEffect } from 'react';
+import { usePCBuilder } from '../context/PCBuilderContext';
 import ChooserGrid from './ChooserGrid';
 import { COMPONENTS } from '../constants';
 import '../styles/accordion.css';
 
-export default function BuilderTable({
-  selected,
-  catalog,
-  activeKey,
-  setActiveKey,
-  onSelect,
-  total,
-  onAddToCart,      // ← new prop supplied by App.jsx
-}) {
+export default function BuilderTable() {
+  const { state, actions, selectors } = usePCBuilder();
+  const [activeKey, setActiveKey] = useState(null);
   const bodiesRef = useRef({});
-  const [errorMsg, setErrorMsg] = useState('');
 
-  /* ------------ header ---------------- */
+  // Remove the props - get data from context instead
+  const selected = state.selected;
+  const catalog = state.catalog;
+
+  // Calculate total from context
+  const total = selectors.getTotalPrice();
+  const formattedTotal = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD'
+  }).format(total);
+
   const Header = ({ comp, open }) => {
-    const sel      = selected[comp.key];
-    const isMulti  = comp.multi === true;
-    const hasSel   = isMulti ? Array.isArray(sel) && sel.length : !!sel;
+    const sel = selected[comp.key];
+    const isMulti = comp.multi === true;
+    const hasSel = isMulti ? Array.isArray(sel) && sel.length : !!sel;
     const firstSel = isMulti ? sel?.[0] : sel;
 
     const summary =
@@ -53,24 +58,8 @@ export default function BuilderTable({
     );
   };
 
-  /* ------------ rows + slide ------------ */
   return (
     <>
-      {/* error banner */}
-      {errorMsg && (
-        <div
-          style={{
-            background: '#5c0000',
-            color: '#fff',
-            padding: '8px 22px',
-            marginBottom: 8,
-            borderRadius: 4,
-          }}
-        >
-          {errorMsg}
-        </div>
-      )}
-
       {COMPONENTS.map((c) => {
         const open = activeKey === c.key;
 
@@ -98,9 +87,6 @@ export default function BuilderTable({
               {open && (
                 <ChooserGrid
                   compKey={c.key}
-                  catalog={catalog}
-                  selected={selected}
-                  onSelect={onSelect}
                   onClose={() => setActiveKey(null)}
                 />
               )}
@@ -109,7 +95,7 @@ export default function BuilderTable({
         );
       })}
 
-      {/* subtotal bar */}
+      {/* Subtotal bar */}
       <div
         style={{
           background: '#3a3a3a',
@@ -122,39 +108,7 @@ export default function BuilderTable({
           borderTop: '2px solid #555',
         }}
       >
-        Subtotal&nbsp;&nbsp;{total}
-      </div>
-
-      {/* add-to-cart bar */}
-      <div
-        style={{
-          background: '#2b2b2b',
-          padding: '18px 22px',
-          display: 'flex',
-          justifyContent: 'flex-end',
-          borderTop: '2px solid #555',
-          position: 'sticky',
-          bottom: 0,
-          zIndex: 5,
-        }}
-      >
-        <button
-          onClick={() => {
-            setErrorMsg('');           // clear previous
-            onAddToCart(setErrorMsg);  // App.jsx will perform the API calls
-          }}
-          style={{
-            background: '#28a745',
-            color: '#fff',
-            padding: '10px 26px',
-            fontSize: 16,
-            border: 'none',
-            borderRadius: 6,
-            cursor: 'pointer',
-          }}
-        >
-          Add Build to Cart
-        </button>
+        Subtotal&nbsp;&nbsp;{formattedTotal}
       </div>
     </>
   );

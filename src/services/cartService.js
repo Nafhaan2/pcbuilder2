@@ -1,5 +1,6 @@
 // src/services/cartService.js - Robust cart handling with fallbacks
 import { apiRateLimiter } from '../utils/security';
+import { useState, useCallback } from 'react';
 
 /**
  * CartService handles adding items to WooCommerce cart with multiple fallback strategies
